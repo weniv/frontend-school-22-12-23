@@ -1,19 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 
 function AddCalculator() {
-  let num1 = 0;
-  let num2 = 0;
+  const [num1,setNum1] = useState(0)// useState라는 함수 실행결과로 배열이 나온다.
+  const [num2,setNum2] = useState(0)
+  console.log(num1)//배열의 0번째는 값이나오고 1번째는 함수(값을 바꿔주는)가나온다.
+  
   console.log("더하기 컴포넌트 함수가 실행되었습니다.")
   return(
     <div>
       <h2>더하기</h2>
       <input type="number" name="num1" onChange={(e)=>{
-        num1=Number(e.target.value)
-        console.log(num1)
+        setNum1(Number(e.target.value))//리액트야! Number(e.target.value)이 값으로 바꿔줘!
+        // console.log(num1)
         }}/>
       <input type="number" name="num2" onChange={(e)=>{
-        num2=Number(e.target.value)
-        console.log(num2)
+        setNum2(Number(e.target.value))
+        // console.log(num2)
 
       }}/>
       결과 : {num1+num2}
