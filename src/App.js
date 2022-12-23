@@ -1,24 +1,45 @@
 import React, { useEffect, useState } from "react"
 
 function AddCalculator() {
-  const [num1,setNum1] = useState(0)// useState라는 함수 실행결과로 배열이 나온다.
-  const [num2,setNum2] = useState(0)
-  useEffect(()=>console.log("값이바뀜"),[num1,num2])
-  console.log(num1,"함수실행 했을때 num1")
-
-  console.log("더하기 컴포넌트 함수가 실행되었습니다.")
+  const [num1, setNum1] = useState(0)
+  const [num2, setNum2] = useState(0)
+  const handleNum1 = (e)=>{
+    const newNum1= parseInt(e.target.value)
+    setNum1(newNum1)
+  }
+  const handleNum2 = (e)=>{
+    const newNum2= parseInt(e.target.value)
+    setNum2(newNum2)
+  }
   return(
     <div>
       <h2>더하기</h2>
-      <input type="number" name="num1" onChange={(e)=>{
-        setNum1(Number(e.target.value))
-        console.log(num1)//이 시점에서는 아직 값이 안바뀜
-        // 그럼 언제바뀜? -> 컴포넌트를 그려주는 함수가 새로 실행됐을때!
-        }}/>
-      <input type="number" name="num2" onChange={(e)=>{
-        setNum2(Number(e.target.value))
-      }}/>
+      
+      <input type="number" name="num1" value={num1} onChange={handleNum1}/>
+      <input type="number" name="num2" value={num2} onChange={handleNum2}/>
       결과 : {num1+num2}
+    </div>
+
+  )
+}
+
+function SubCalculator() {
+  const [num1, setNum1] = useState(0)
+  const [num2, setNum2] = useState(0)
+  const handleNum1 = (e)=>{
+    const newNum1= parseInt(e.target.value)
+    setNum1(newNum1)
+  }
+  const handleNum2 = (e)=>{
+    const newNum2= parseInt(e.target.value)
+    setNum2(newNum2)
+  }
+  return(
+    <div>
+      <h2>빼기</h2>
+      <input type="number" name="num1" value={num1} onChange={handleNum1}/>
+      <input type="number" name="num2" value={num2} onChange={handleNum2}/>
+      결과 : {num1-num2}
     </div>
 
   )
@@ -29,6 +50,7 @@ function App() {
     <div>
       <h1>계산기</h1>
       <AddCalculator/>
+      <SubCalculator/>
     </div>
   );
 }
