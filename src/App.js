@@ -81,7 +81,7 @@ function SubCalculator() {
   }
   const handleNum2 = (e)=>{
     const newNum2 = parseInt(e.target.value)
-    dispatch()
+    dispatch({type:"setNum2",값:newNum2})
   }
   return(
     <div>
