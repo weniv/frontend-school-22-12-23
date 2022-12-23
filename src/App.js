@@ -23,8 +23,13 @@ function SubCalculator(props) {
     </div>
   )
 }
+function App(){
+  return(
+    <Container/>
+  )
+}
 
-function App() {
+function Container() {
   const [num1, setNum1] = useState(0)
   const [num2, setNum2] = useState(0)
   const handleNum1 = (e)=>{
