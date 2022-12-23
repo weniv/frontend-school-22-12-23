@@ -19,6 +19,9 @@ const calculatorSlice = createSlice({
     },
     setNum2:(state,action)=>{
       state.num2 = action.payload
+    },
+    setMall:(state,action)=>{
+      state.mallData = action.payload
     }
   },
   extraReducers:(builder)=>{
@@ -92,6 +95,13 @@ function SubCalculator() {
     const newNum2 = parseInt(e.target.value)
     dispatch({type:setNum2,payload:newNum2})
   }
+  const getMallData = async (id)=>{
+      const res = await fetch("https://test.api.weniv.co.kr/mall/"+id);
+      const json = await res.json();
+      dispatch({type:"calculator/setMall",payload:json})
+  }
+  //아래있는건 createAsyncThunk사용하는 예시
+  // const getMallData = ()=>dispatch(asyncGetMallData(1))
   return(
     <div>
       <h2>빼기</h2>
@@ -100,7 +110,9 @@ function SubCalculator() {
       결과 : {num1-num2}
       <div>
         여기는 상품 데이터가 표시되는 곳입니다.
-        <button onClick={()=>dispatch(asyncGetMallData(1))}>데이터 가져오기</button>
+        {/*  createAsyncThunk사용하는 예시 */}
+        {/* <button onClick={getMallData}>데이터 가져오기</button> */}
+        <button onClick={()=>getMallData(1)}>데이터 가져오기</button>
         {JSON.stringify(mallData)}
       </div>
     </div>
