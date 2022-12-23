@@ -92,14 +92,15 @@ function AddCalculator() {
 
 function SubCalculator() {
   const {num1, num2} = useSelector(state=>state.calculator)
+  const {setNum1,setNum2} = calculatorSlice.actions
   const dispatch = useDispatch()
   const handleNum1 = (e)=>{
     const newNum1 = parseInt(e.target.value)
-    dispatch({type:"calculator/setNum1",payload:newNum1})
+    dispatch({type:setNum1,payload:newNum1})
   }
   const handleNum2 = (e)=>{
     const newNum2 = parseInt(e.target.value)
-    dispatch({type:"calculator/setNum2",payload:newNum2})
+    dispatch({type:setNum2,payload:newNum2})
 
   }
   return(
