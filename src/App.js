@@ -1,9 +1,15 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit"
-import React, { useState } from "react"
+import { configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import React from "react"
 import { Provider, useDispatch, useSelector } from "react-redux"
-import { createStore } from "redux"
 
-const initialState ={num1:0, num2:0}//이게 초기상태
+const initialState ={num1:0, num2:0, mallData:{}}//이게 초기상태
+
+const asyncGetMallData = createAsyncThunk('calculator',async (id)=>{
+  const res = await fetch("https://test.api.weniv.co.kr/mall/"+id);
+  const json = await res.json();
+  return json
+})
+
 const calculatorSlice = createSlice({
   name:"calculator",
   initialState:initialState,
@@ -14,6 +20,15 @@ const calculatorSlice = createSlice({
     setNum2:(state,action)=>{
       state.num2 = action.payload
     }
+  },
+  extraReducers:(builder)=>{
+    // builder.addCase(asyncGetMallData.pending,(state,action)=>{
+    // 나중에 빈칸채워서 이것저것 해보기
+    // } )
+
+    builder.addCase(asyncGetMallData.fulfilled, (state, action)=>{
+      state.mallData = action.payload
+    })
   }
 })
 const store = configureStore({
@@ -21,31 +36,6 @@ const store = configureStore({
     calculator:calculatorSlice.reducer,
   }
 })
-
-
-// const 은행원 = (상태, 행동)=>{
-//   switch (행동.type) {
-//     case "setNum1":
-//       //어려운 로직들 막 작성하기~
-//       const 결과값 = 행동.값
-//       return {...상태, num1:결과값}//새로 업데이트될 상태를 return해준다!
-//     case "setNum2":
-//       return {...상태, num2:행동.값}
-//     default:
-//       return 상태
-//       break;
-//   }
-// } 
-// const 은행 = createStore(은행원, initialState)
-
-// const 행동들 = {
-//   setNum1(값){
-//     return {type:"setNum1",값:값}
-//   },
-//   setNum2(값){
-//     return {type:"setNum2",값:값}
-//   }
-// }
 
 function App(){
   return(
@@ -91,7 +81,7 @@ function AddCalculator() {
 }
 
 function SubCalculator() {
-  const {num1, num2} = useSelector(state=>state.calculator)
+  const {num1, num2, mallData} = useSelector(state=>state.calculator)
   const {setNum1,setNum2} = calculatorSlice.actions
   const dispatch = useDispatch()
   const handleNum1 = (e)=>{
@@ -101,7 +91,6 @@ function SubCalculator() {
   const handleNum2 = (e)=>{
     const newNum2 = parseInt(e.target.value)
     dispatch({type:setNum2,payload:newNum2})
-
   }
   return(
     <div>
@@ -109,6 +98,11 @@ function SubCalculator() {
       <input type="number" name="num1" value={num1} onChange={handleNum1}/>
       <input type="number" name="num2" value={num2} onChange={handleNum2}/>
       결과 : {num1-num2}
+      <div>
+        여기는 상품 데이터가 표시되는 곳입니다.
+        <button onClick={()=>dispatch(asyncGetMallData(1))}>데이터 가져오기</button>
+        {JSON.stringify(mallData)}
+      </div>
     </div>
   )
 }
